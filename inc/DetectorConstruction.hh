@@ -46,7 +46,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     const G4double auThick = 500. * nm; 
 
     //Could consider making the cut outs for the legs... 
-    const G4double siXY    = 2.00 * mm;
+    const G4double siXY    = 1.00 * mm;
     const G4double siThick = 380. * um;
     
     
@@ -71,7 +71,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
     // Tar occupies z in [-2.5, +2.5] mm
     G4double z = 0.;
-    makeBlock("Tar", tar, tarXY, tarThick, z, G4Colour(0.6, 0.6, 0.7));
+    //makeBlock("Tar", tar, tarXY, tarThick, z, G4Colour(0.6, 0.6, 0.7));
     z += tarThick / 2 + z_gap + snThick / 2;    
     makeBlock("Sn", sn, snXY, snThick, z, G4Colour(0.8, 0.8, 0.8));
     z += snThick / 2 + auThick / 2;

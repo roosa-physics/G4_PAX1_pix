@@ -35,6 +35,26 @@ class EventAction : public G4UserEventAction {
       }
       am->FillNtupleDColumn(i, total / eV);
     }
+
+
+    // Starting (primary) particle: type and initial kinetic energy
+    G4int pdg = 0;
+    G4String name = "none";
+    G4double ekin = 0.;
+    if (auto* vertex = event->GetPrimaryVertex()) {
+      if (auto* primary = vertex->GetPrimary()) {
+        pdg = primary->GetPDGcode();
+        ekin = primary->GetKineticEnergy();
+        if (auto* def = primary->GetParticleDefinition()) {
+          name = def->GetParticleName();
+        }
+      }
+    }
+    am->FillNtupleIColumn(3, pdg);
+    am->FillNtupleSColumn(4, name);
+    am->FillNtupleDColumn(5, ekin);
+
+    
     am->AddNtupleRow();
   }
 

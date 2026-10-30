@@ -20,6 +20,11 @@ class RunAction : public G4UserRunAction {
     am->CreateNtupleDColumn("E_Sn");  // column 0
     am->CreateNtupleDColumn("E_Au");  // column 1
     am->CreateNtupleDColumn("E_Si");  // column 2
+
+    am->CreateNtupleIColumn("primary_pdg");   // column 3: PDG code (anti_proton = -2212)
+    am->CreateNtupleSColumn("primary_name");  // column 4: Geant4 particle name
+    am->CreateNtupleDColumn("primary_E");     // column 5: initial kinetic energy [MeV]
+
     am->FinishNtuple();
   }
 
