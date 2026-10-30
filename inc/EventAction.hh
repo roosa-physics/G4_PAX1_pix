@@ -7,6 +7,8 @@
 #include "G4SDManager.hh"
 #include "G4THitsMap.hh"
 #include "G4UserEventAction.hh"
+#include "G4SystemOfUnits.hh"
+
 
 // At the end of each event, sums the scorer maps of the three sensitive
 // layers and fills one ntuple row.
@@ -31,7 +33,7 @@ class EventAction : public G4UserEventAction {
       if (map) {
         for (auto& kv : *map->GetMap()) total += *(kv.second);
       }
-      am->FillNtupleDColumn(i, total);
+      am->FillNtupleDColumn(i, total / eV);
     }
     am->AddNtupleRow();
   }

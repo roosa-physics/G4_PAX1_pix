@@ -31,20 +31,35 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     auto* au = nist->FindOrBuildMaterial("G4_Au");
     auto* si = nist->FindOrBuildMaterial("G4_Si");
 
-    const G4double xy = 1. * cm;
-    const G4double zrThick = 2. * mm;
-    G4double z_gap = 2. * mm;
+    //const G4double xy = 1. * cm;
 
-    const G4double layerThick = 1. * mm;
+    const G4double zrXY    = 700. * um;
+    const G4double zrThick = 100. * um;
+    G4double z_gap         = 500. * um;
 
+    //Dimensions are from an email exchange with JN (NIST) ~June 2025
+    const G4double snXY    = 1.30 * mm;
+    const G4double snThick = 500. * um;
+
+    const G4double auXY    = 500. * um; // The pad itself is smaller than the absorber
+    const G4double auThick = 500. * nm; 
+
+    //Could consider making the cut outs for the legs... 
+    const G4double siXY    = 2.00 * mm;
+    const G4double siThick = 380. * um;
+    
+    
+  
     // World
-    auto* worldS = new G4Box("World", 5. * cm, 5. * cm, 5. * cm);
+    auto* worldS = new G4Box("World", 1. * cm, 1. * cm, 2. * cm);
     auto* worldLV = new G4LogicalVolume(worldS, vacuum, "WorldLV");
     auto* worldPV =
       new G4PVPlacement(nullptr, {}, worldLV, "World", nullptr, false, 0, true);
     worldLV->SetVisAttributes(G4VisAttributes::GetInvisible());
 
-    auto makeBlock = [&](const char* name, G4Material* mat, G4double thick,
+
+    // Funcitonal block maker
+    auto makeBlock = [&](const char* name, G4Material* mat, G4double xy, G4double thick,
                          G4double zCentre, const G4Colour& col) {
       auto* s = new G4Box(name, xy / 2, xy / 2, thick / 2);
       auto* lv = new G4LogicalVolume(s, mat, std::string(name) + "LV");
@@ -55,15 +70,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
     // Zr occupies z in [-2.5, +2.5] mm
     G4double z = 0.;
-    makeBlock("Zr", zr, zrThick, z, G4Colour(0.6, 0.6, 0.7));
-    z += zrThick / 2 + layerThick / 2;
-    z += z_gap; 
-    
-    makeBlock("Sn", sn, layerThick, z, G4Colour(0.8, 0.8, 0.8));
-    z += layerThick;
-    makeBlock("Au", au, layerThick, z, G4Colour(1.0, 0.84, 0.0));
-    z += layerThick;
-    makeBlock("Si", si, layerThick, z, G4Colour(0.2, 0.4, 0.9));
+    makeBlock("Zr", zr, zrXY, zrThick, z, G4Colour(0.6, 0.6, 0.7));
+    z += zrThick / 2 + z_gap + snThick / 2;    
+    makeBlock("Sn", sn, snXY, snThick, z, G4Colour(0.8, 0.8, 0.8));
+    z += snThick / 2 + auThick / 2;
+    makeBlock("Au", au, auXY, auThick, z, G4Colour(1.0, 0.84, 0.0));
+    z += auThick / 2 + siThick / 2;
+    makeBlock("Si", si, siXY, siThick, z, G4Colour(0.2, 0.4, 0.9));
 
     return worldPV;
   }
