@@ -1,0 +1,3 @@
+/Users/roosa/G4_PAX1_pix/build/CMakeFiles/sim.dir
+/Users/roosa/G4_PAX1_pix/build/CMakeFiles/edit_cache.dir
+/Users/roosa/G4_PAX1_pix/build/CMakeFiles/rebuild_cache.dir
