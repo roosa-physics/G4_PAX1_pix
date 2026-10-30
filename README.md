@@ -10,7 +10,7 @@ I bootstrapped this with claude giving some rough prompt where I asked for a mod
 
 
 After handing it a reasonable estimate of the pixel geometry
-![event](./event_geoV1.png)
+![event](./event_geo_v1.png)
 
 I get a reasonable background spectrum:
 ![edep](./v1_demo.png)
