@@ -26,16 +26,17 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
   G4VPhysicalVolume* Construct() override {
     auto* nist = G4NistManager::Instance();
     auto* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
-    auto* zr = nist->FindOrBuildMaterial("G4_Zr");
+    //auto* tar = nist->FindOrBuildMaterial("G4_Zr"); // Zr target
+    auto* tar = nist->FindOrBuildMaterial("G4_H");    // H  target
     auto* sn = nist->FindOrBuildMaterial("G4_Sn");
     auto* au = nist->FindOrBuildMaterial("G4_Au");
     auto* si = nist->FindOrBuildMaterial("G4_Si");
 
     //const G4double xy = 1. * cm;
 
-    const G4double zrXY    = 700. * um;
-    const G4double zrThick = 100. * um;
-    G4double z_gap         = 500. * um;
+    const G4double tarXY    = 700. * um;
+    const G4double tarThick = 100. * um;
+    G4double z_gap          = 500. * um;
 
     //Dimensions are from an email exchange with JN (NIST) ~June 2025
     const G4double snXY    = 1.30 * mm;
@@ -68,10 +69,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
       lv->SetVisAttributes(new G4VisAttributes(col));
     };
 
-    // Zr occupies z in [-2.5, +2.5] mm
+    // Tar occupies z in [-2.5, +2.5] mm
     G4double z = 0.;
-    makeBlock("Zr", zr, zrXY, zrThick, z, G4Colour(0.6, 0.6, 0.7));
-    z += zrThick / 2 + z_gap + snThick / 2;    
+    makeBlock("Tar", tar, tarXY, tarThick, z, G4Colour(0.6, 0.6, 0.7));
+    z += tarThick / 2 + z_gap + snThick / 2;    
     makeBlock("Sn", sn, snXY, snThick, z, G4Colour(0.8, 0.8, 0.8));
     z += snThick / 2 + auThick / 2;
     makeBlock("Au", au, auXY, auThick, z, G4Colour(1.0, 0.84, 0.0));
@@ -83,7 +84,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
   void ConstructSDandField() override {
     // One multi-functional detector (with an energy-deposit scorer) per layer,
-    // as in example B4d. Zr is deliberately left without an SD.
+    // as in example B4d. Tar is deliberately left without an SD.
     for (const char* layer : {"Sn", "Au", "Si"}) {
       auto* mfd = new G4MultiFunctionalDetector(std::string(layer) + "SD");
       mfd->RegisterPrimitive(new G4PSEnergyDeposit("Edep"));

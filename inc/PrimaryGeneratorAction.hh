@@ -16,7 +16,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
     fGun = new G4ParticleGun(1);
     fGun->SetParticleDefinition(
       G4ParticleTable::GetParticleTable()->FindParticle("anti_proton"));
-    fGun->SetParticleEnergy(100. * keV);
+    fGun->SetParticleEnergy(100. * eV);
     fGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
     fGun->SetParticlePosition(G4ThreeVector(0., 0., -1. * cm));
   }
